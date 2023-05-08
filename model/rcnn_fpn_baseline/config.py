@@ -43,19 +43,22 @@ class Config:
     gt_boxes_name = 'fbox'
 
     # ----------train config---------- #
+    # Warm up指的是用一个小的学习率先训练几个epoch，
+    # 这是因为网络的参数是随机初始化的，一开始就采用较大的学习率容易数值不稳定
     backbone_freeze_at = 2
-    rpn_channel = 256
-    
-    train_batch_per_gpu = 2
-    momentum = 0.9
-    weight_decay = 1e-4
-    base_lr = 1e-3 * 1.25
 
-    warm_iter = 800
-    max_epoch = 30
+    rpn_channel = 256  # rpn通道数
+    train_batch_per_gpu = 2 # 每张卡的batch_size
+
+    momentum = 0.9  # SGD优化参数
+    weight_decay = 1e-4 # SGD优化参数
+    base_lr = 1e-3 * 1.25 # 具体learning rate根据实际GPU数计算
+    # learning rate == config.base_lr * config.train_batch_per_gpu * num_gpus
+    warm_iter = 800 # warmup循环数
+    max_epoch = 1
     lr_decay = [24, 27]
-    nr_images_epoch = 15000
-    log_dump_interval = 20
+    nr_images_epoch = 15000 # 每一轮训练用的图片数15000
+    log_dump_interval = 1  # log打印频率 原来是20
 
     # ----------test config---------- #
     test_nms = 0.5
